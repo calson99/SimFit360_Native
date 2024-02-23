@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using SimFit360.Data;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -16,9 +17,31 @@ namespace SimFit360
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		public MainWindow()
+        public static MainWindow Instance { get; private set; }
+        public MainWindow()
 		{
-			InitializeComponent();
-		}
-	}
+			InitializeComponent(); 
+            Instance = this;
+            NavigateToLoginPage(); 
+        }
+
+        public void NavigateToLoginPage()
+        {
+            MainFrame.Navigate(new LoginPage());
+        }
+
+        public void NavigateToMainPage()
+        {
+            MainFrame.Navigate(new MainPage());
+        }
+        public void NavigateToActivityPage()
+        {
+            MainFrame.Navigate(new ActivityPage());
+        }
+        public void NavigateToSportPage()
+        {
+            MainFrame.Navigate(new SportPage());
+        }
+
+    }
 }

@@ -7,6 +7,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            
+        <Frame x:Name="MainFrame" Navigated="MainFrame_Navigated"  NavigationUIVisibility="Hidden"/>
+        <Button Content="Start" HorizontalAlignment="Center" VerticalAlignment="Top" Click="StartSportClick" Height="254" Width="474" Margin="0,50,0,0" Background="Green"/>
+        <Button Content="Alle activiteit" HorizontalAlignment="Left" VerticalAlignment="Top" Click="BekijkAlleActiviteit" Margin="163,339,0,0" Height="50" Width="175"/>
+        <Button Content="Sign out" HorizontalAlignment="Left" VerticalAlignment="Top" Click="Loguit" Margin="462,339,0,0" Height="50" Width="175" Background="#e50000"/>
     </Grid>
 </UserControl>
