@@ -21,12 +21,14 @@ namespace SimFit360
     public partial class SportPage : UserControl
     {
         private int Difficulty { get; set; } = 0;
+        private TimeSpan workoutTime = new TimeSpan(0, 0, 0);
         private const int MaxDifficulty = 10; // Maximum difficulty level
         public SportPage()
         {
             InitializeComponent();
             UpdateDifficultyText();
         }
+
 
         private void DifficultyIncrease_Click(object sender, RoutedEventArgs e)
         {
@@ -46,13 +48,40 @@ namespace SimFit360
 
         private void Stop_Click(object sender, RoutedEventArgs e)
         {
-            // Handle STOP button click if needed
+            // Prompt the user to save the workout if it's under 3 minutes
+            if (workoutTime.TotalMinutes < 3)
+            {
+                MessageBoxResult result = MessageBox.Show("The workout is under 3 minutes. Do you want to save it?", "Save Workout", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    // Save workout information here
+                    SaveWorkout();
+                }
+                else
+                {
+                    // Handle other actions if needed
+                }
+            }
+            else
+            {
+                // Save workout information since it's not under 3 minutes
+                SaveWorkout();
+            }
         }
 
         private void UpdateDifficultyText()
         {
             // Update and display the difficulty in the TextBlock
             DifficultyText.Text = Difficulty.ToString();
+        }
+
+        private void SaveWorkout()
+        {
+            // Implement the logic to save the workout information
+            // This can include saving the difficulty, workout time, etc.
+            // For demonstration purposes, we'll display a message for now.
+            MessageBox.Show("Workout saved!", "Save Workout", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 
