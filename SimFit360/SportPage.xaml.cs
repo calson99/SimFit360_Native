@@ -21,6 +21,7 @@ namespace SimFit360
     public partial class SportPage : UserControl
     {
         private int Difficulty { get; set; } = 0;
+        private const int MaxDifficulty = 10; // Maximum difficulty level
         public SportPage()
         {
             InitializeComponent();
@@ -29,16 +30,11 @@ namespace SimFit360
 
         private void DifficultyIncrease_Click(object sender, RoutedEventArgs e)
         {
-            // Toggle between showing numbers and "+"
-            if (IncreaseButton.IsChecked == true)
+            // Check if difficulty is less than the maximum before incrementing
+            if (Difficulty < MaxDifficulty)
             {
                 Difficulty++;
                 UpdateDifficultyText();
-            }
-            else
-            {
-                // Set the "+" symbol when the ToggleButton is unchecked
-                DifficultyText.Text = "+";
             }
         }
 
@@ -56,7 +52,7 @@ namespace SimFit360
         private void UpdateDifficultyText()
         {
             // Update and display the difficulty in the TextBlock
-            DifficultyText.Text = IncreaseButton.IsChecked == true ? Difficulty.ToString() : "+";
+            DifficultyText.Text = Difficulty.ToString();
         }
     }
 
