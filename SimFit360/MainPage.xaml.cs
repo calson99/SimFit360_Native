@@ -20,9 +20,31 @@ namespace SimFit360
 	/// </summary>
 	public partial class MainPage : UserControl
 	{
-		public MainPage()
-		{
-			InitializeComponent();
-		}
-	}
+        public MainPage()
+        {
+            InitializeComponent();
+            MainFrame.Navigated += MainFrame_Navigated; 
+
+        }
+
+        private void MainFrame_Navigated(object sender, NavigationEventArgs e)
+        {
+            
+        }
+
+        private void StartSportClick(object sender, RoutedEventArgs e)
+        {
+            MainWindow.Instance.NavigateToSportPage();
+        }
+
+        private void BekijkAlleActiviteit(object sender, RoutedEventArgs e)
+        {
+            MainWindow.Instance.NavigateToActivityPage();
+        }
+
+        private void Loguit(object sender, RoutedEventArgs e)
+        {
+            MainWindow.Instance.NavigateToLoginPage();
+        }
+    }
 }
