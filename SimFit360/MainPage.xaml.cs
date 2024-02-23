@@ -24,6 +24,7 @@ namespace SimFit360
         {
             InitializeComponent();
             MainFrame.Navigated += MainFrame_Navigated; 
+
         }
 
         private void MainFrame_Navigated(object sender, NavigationEventArgs e)
