@@ -33,11 +33,12 @@ namespace SimFit360
 
         private void StartSportClick(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new SportPage());
+            MainWindow.Instance.NavigateToSportPage();
         }
 
         private void BekijkAlleActiviteit(object sender, RoutedEventArgs e)
         {
+            MainWindow.Instance.NavigateToActivityPage();
         }
 
         private void Loguit(object sender, RoutedEventArgs e)
