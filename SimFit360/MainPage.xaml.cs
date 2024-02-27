@@ -25,14 +25,8 @@ namespace SimFit360
         {
             InitializeComponent();
             UserId = userId;
-            MainFrame.Navigated += MainFrame_Navigated; 
-
         }
 
-        private void MainFrame_Navigated(object sender, NavigationEventArgs e)
-        {
-            
-        }
 
         private void StartSportClick(object sender, RoutedEventArgs e)
         {
