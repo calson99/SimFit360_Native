@@ -30,9 +30,9 @@ namespace SimFit360
             MainFrame.Navigate(new LoginPage());
         }
 
-        public void NavigateToMainPage()
+        public void NavigateToMainPage(int userId)
         {
-            MainFrame.Navigate(new MainPage());
+            MainFrame.Navigate(new MainPage(userId));
         }
         public void NavigateToActivityPage()
         {
