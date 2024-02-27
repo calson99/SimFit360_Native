@@ -20,9 +20,11 @@ namespace SimFit360
 	/// </summary>
 	public partial class MainPage : UserControl
 	{
-        public MainPage()
+        public int UserId { get; set; }
+        public MainPage(int userId)
         {
             InitializeComponent();
+            UserId = userId;
             MainFrame.Navigated += MainFrame_Navigated; 
 
         }
