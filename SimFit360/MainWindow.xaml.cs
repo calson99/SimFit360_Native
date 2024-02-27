@@ -22,8 +22,9 @@ namespace SimFit360
         {
             InitializeComponent();
             Instance = this;
-            NavigateToMainPage();
-        }
+            NavigateToLoginPage();
+
+		}
 
         public void NavigateToLoginPage()
         {

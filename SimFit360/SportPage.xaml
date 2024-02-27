@@ -21,13 +21,13 @@
 
         <!-- Time, Calorieen, Niveau Grid -->
         <Grid Grid.ColumnSpan="2">
-            <TextBlock Text="0:00" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="white"/>
-            <TextBlock Text="Calorieen" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
+            <TextBlock Text="0:00" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Black"/>
+            <TextBlock Text="Calorieen" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
 
             <!-- StackPanel to hold Niveau TextBlock and DifficultyText -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                <TextBlock Text="Niveau" FontSize="20" FontWeight="Bold" Foreground="White"/>
-                <TextBlock x:Name="DifficultyText" FontSize="20" FontWeight="Bold" Foreground="White" Margin="5 0 0 0"/>
+                <TextBlock Text="Niveau" FontSize="20" FontWeight="Bold" Foreground="Black"/>
+                <TextBlock x:Name="DifficultyText" FontSize="20" FontWeight="Bold" Foreground="Black" Margin="5 0 0 0"/>
             </StackPanel>
         </Grid>
 
