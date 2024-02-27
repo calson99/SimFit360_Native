@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using SimFit360.Data;
 
 namespace SimFit360
 {
@@ -26,13 +27,13 @@ namespace SimFit360
         private TimeSpan workoutTime = new TimeSpan(0, 0, 0);
         private const int MaxDifficulty = 10; // Maximum difficulty level
         private DispatcherTimer timer;
+        private bool isPaused = false;
         public int UserId { get; set; }
         public SportPage(int userId)
         {
             InitializeComponent();
             UpdateDifficultyText();
             UserId = userId;
-
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1); // Update every second
             timer.Tick += Timer_Tick;
@@ -45,10 +46,17 @@ namespace SimFit360
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            // Update the workout time and display it
-            workoutTime = workoutTime.Add(TimeSpan.FromSeconds(1));
-            // Update UI on the main thread
-            WorkoutTimeText.Text = workoutTime.ToString(@"hh\:mm\:ss");
+            if (!isPaused)
+            {
+                // Update the workout time and display it
+                workoutTime = workoutTime.Add(TimeSpan.FromSeconds(1));
+                // Update UI on the main thread
+                WorkoutTimeText.Text = workoutTime.ToString(@"hh\:mm\:ss");
+
+                // Calculate and display calories burned
+                double caloriesBurned = CalculateKcal();
+                CaloriesText.Text = $"Calories: {caloriesBurned:F2}"; // Display calories with two decimal places
+            }
         }
 
         private void DifficultyIncrease_Click(object sender, RoutedEventArgs e)
@@ -69,6 +77,9 @@ namespace SimFit360
 
         private void Stop_Click(object sender, RoutedEventArgs e)
         {
+            // Pause the timer
+            isPaused = true;
+
             // Prompt the user to save the workout if it's under 3 minutes
             if (workoutTime.TotalMinutes < 3)
             {
@@ -76,19 +87,36 @@ namespace SimFit360
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    // Save workout information here
+                    // Save workout information to the database
                     SaveWorkout();
+                    // Reset everything
+                    ResetWorkout();
                 }
                 else
                 {
+                    // Unpause the timer if the user chooses not to save
+                    isPaused = false;
                     // Handle other actions if needed
                 }
             }
             else
             {
-                // Save workout information since it's not under 3 minutes
+                // Save workout information to the database
                 SaveWorkout();
+                // Reset everything
+                ResetWorkout();
             }
+        }
+
+        private void ResetWorkout()
+        {
+            // Reset workout variables
+            workoutTime = new TimeSpan(0, 0, 0);
+            isPaused = false;
+
+            // Reset UI
+            WorkoutTimeText.Text = "00:00:00";
+            CaloriesText.Text = "Calories: 0.00";
         }
 
         private void UpdateDifficultyText()
@@ -99,11 +127,58 @@ namespace SimFit360
 
         private void SaveWorkout()
         {
-            // Implement the logic to save the workout information
-            // This can include saving the difficulty, workout time, etc.
-            // For demonstration purposes, we'll display a message for now.
-            MessageBox.Show("Workout saved!", "Save Workout", MessageBoxButton.OK, MessageBoxImage.Information);
+            using (AppDbContext dbContext = new AppDbContext())
+            {
+                try
+                {
+                    // Create an instance of Activity
+                    Activity workoutActivity = new Activity
+                    {
+                        Time = workoutTime,
+                        Date = DateTime.Now,
+                        Kcal = (int)CalculateKcal(),
+                        UserId = UserId,
+                        MaschineId = 1 // Replace with the correct property name
+                        // Add other properties as needed
+                    };
+
+                    // Add the workoutActivity to the Activities DbSet
+                    dbContext.Activities.Add(workoutActivity);
+
+                    // Save changes to the database
+                    dbContext.SaveChanges();
+
+                    // Show confirmation message
+                    MessageBox.Show("Workout saved!", "Save Workout", MessageBoxButton.OK, MessageBoxImage.Information);
+                    // Navigate back to MainPage
+                    NavigateToMainPage();
+                }
+                catch (Exception ex)
+                {
+                    // Handle any exceptions that may occur during the database operation
+                    MessageBox.Show($"Error saving workout: {ex.Message}", "Save Workout Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
+
+        private void NavigateToMainPage()
+        {
+            MainWindow.Instance.NavigateToMainPage(UserId);
+        }
+        private double CalculateKcal()
+        {
+            // Define baseline calorie burn rate per second
+            const double BaselineCaloriesPerSecond = 0.1;
+
+            // Adjust the baseline based on difficulty
+            double adjustedCaloriesPerSecond = BaselineCaloriesPerSecond + (Difficulty * 0.02);
+
+            // Calculate total calories burned
+            double totalCalories = adjustedCaloriesPerSecond * workoutTime.TotalSeconds;
+
+            return totalCalories;
+        }
+
     }
 
 }
