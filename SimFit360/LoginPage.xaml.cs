@@ -96,6 +96,10 @@ namespace SimFit360
 					{
 						MainWindow.Instance.NavigateToMainPage(user.Id);
 					}
+					else
+					{
+						MessageBox.Show("Invalid pincode");
+					}
 				}
 			}
 			
