@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SimFit360.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace SimFit360
 {
@@ -23,12 +25,31 @@ namespace SimFit360
         private int Difficulty { get; set; } = 0;
         private TimeSpan workoutTime = new TimeSpan(0, 0, 0);
         private const int MaxDifficulty = 10; // Maximum difficulty level
-        public SportPage()
+        private DispatcherTimer timer;
+        public int UserId { get; set; }
+        public SportPage(int userId)
         {
             InitializeComponent();
             UpdateDifficultyText();
+            UserId = userId;
+
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(1); // Update every second
+            timer.Tick += Timer_Tick;
         }
 
+        public void StartTimer()
+        {
+            timer.Start();
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            // Update the workout time and display it
+            workoutTime = workoutTime.Add(TimeSpan.FromSeconds(1));
+            // Update UI on the main thread
+            WorkoutTimeText.Text = workoutTime.ToString(@"hh\:mm\:ss");
+        }
 
         private void DifficultyIncrease_Click(object sender, RoutedEventArgs e)
         {

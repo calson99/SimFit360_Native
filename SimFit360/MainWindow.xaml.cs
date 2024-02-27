@@ -24,7 +24,7 @@ namespace SimFit360
             Instance = this;
             NavigateToLoginPage();
 
-		}
+        }
 
         public void NavigateToLoginPage()
         {
@@ -39,9 +39,9 @@ namespace SimFit360
         {
             MainFrame.Navigate(new ActivityPage());
         }
-        public void NavigateToSportPage()
+        public void NavigateToSportPage(SportPage sportpage)
         {
-            MainFrame.Navigate(new SportPage());
+            MainFrame.Navigate(sportpage);
         }
 
     }
