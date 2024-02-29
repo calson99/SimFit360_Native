@@ -39,10 +39,11 @@ namespace SimFit360
             // Start the timer in the SportPage
             sportPage.StartTimer();
         }
-
         private void BekijkAlleActiviteit(object sender, RoutedEventArgs e)
         {
-            MainWindow.Instance.NavigateToActivityPage();
+            ActivityPage activityPage = new ActivityPage(UserId);
+
+            MainWindow.Instance.NavigateToActivityPage(activityPage);
         }
 
         private void Loguit(object sender, RoutedEventArgs e)
