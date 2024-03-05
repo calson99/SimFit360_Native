@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using SimFit360.Classes;
+using SimFit360.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +23,36 @@ namespace SimFit360
 	/// </summary>
 	public partial class ActivityPage : UserControl
 	{
-		public ActivityPage()
-		{
-			InitializeComponent();
-		}
-	}
+        public int UserId { get; set; }
+
+        public ActivityPage(int userId)
+        {
+            InitializeComponent();
+
+            UserId = userId;
+            LoadActivities();
+        }
+
+        private void LoadActivities()
+        {
+            using (var db = new AppDbContext())
+            {
+                var activities = db.Activities
+                                   .Include(a => a.Maschine)
+                                   .Where(a => a.UserId == UserId)
+                                   .ToList();
+                DataContext = activities;
+            }
+        }
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigateToMainPage(UserId);
+        }
+
+        public void NavigateToMainPage(int userId)
+        {
+            MainWindow.Instance.NavigateToMainPage(UserId);
+        }
+   
+    }
 }

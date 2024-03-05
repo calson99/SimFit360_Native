@@ -12,17 +12,18 @@ using System.Windows.Shapes;
 
 namespace SimFit360
 {
-	/// <summary>
-	/// Interaction logic for MainWindow.xaml
-	/// </summary>
-	public partial class MainWindow : Window
-	{
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
         public static MainWindow Instance { get; private set; }
         public MainWindow()
-		{
-			InitializeComponent(); 
+        {
+            InitializeComponent();
             Instance = this;
-            NavigateToLoginPage(); 
+            NavigateToLoginPage();
+
         }
 
         public void NavigateToLoginPage()
@@ -34,13 +35,13 @@ namespace SimFit360
         {
             MainFrame.Navigate(new MainPage(userId));
         }
-        public void NavigateToActivityPage()
+        public void NavigateToActivityPage(ActivityPage activitypage)
         {
-            MainFrame.Navigate(new ActivityPage());
+            MainFrame.Navigate(activitypage);
         }
-        public void NavigateToSportPage()
+        public void NavigateToSportPage(SportPage sportpage)
         {
-            MainFrame.Navigate(new SportPage());
+            MainFrame.Navigate(sportpage);
         }
 
     }
