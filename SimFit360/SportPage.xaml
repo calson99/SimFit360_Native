@@ -21,8 +21,8 @@
 
         <!-- Time, Calorieen, Niveau Grid -->
         <Grid Grid.ColumnSpan="2">
-            <TextBlock Text="0:00" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Black"/>
-            <TextBlock Text="Calorieen" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
+            <TextBlock x:Name="WorkoutTimeText" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Black"/>
+            <TextBlock x:Name="CaloriesText" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
 
             <!-- StackPanel to hold Niveau TextBlock and DifficultyText -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">

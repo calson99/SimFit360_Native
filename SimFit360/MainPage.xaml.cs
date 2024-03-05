@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 
 namespace SimFit360
 {
-	/// <summary>
-	/// Interaction logic for MainPage.xaml
-	/// </summary>
-	public partial class MainPage : UserControl
-	{
+    /// <summary>
+    /// Interaction logic for MainPage.xaml
+    /// </summary>
+    public partial class MainPage : UserControl
+    {
         public int UserId { get; set; }
         public MainPage(int userId)
         {
@@ -30,12 +30,20 @@ namespace SimFit360
 
         private void StartSportClick(object sender, RoutedEventArgs e)
         {
-            MainWindow.Instance.NavigateToSportPage();
-        }
+            // Pass the UserId to the SportPage constructor
+            SportPage sportPage = new SportPage(UserId);
 
+            // Navigate to the SportPage
+            MainWindow.Instance.NavigateToSportPage(sportPage);
+
+            // Start the timer in the SportPage
+            sportPage.StartTimer();
+        }
         private void BekijkAlleActiviteit(object sender, RoutedEventArgs e)
         {
-            MainWindow.Instance.NavigateToActivityPage();
+            ActivityPage activityPage = new ActivityPage(UserId);
+
+            MainWindow.Instance.NavigateToActivityPage(activityPage);
         }
 
         private void Loguit(object sender, RoutedEventArgs e)
