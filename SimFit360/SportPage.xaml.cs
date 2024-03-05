@@ -20,7 +20,7 @@ namespace SimFit360
     /// </summary>
     public partial class SportPage : UserControl
     {
-        private int Difficulty { get; set; } = 0;
+        private int Difficulty { get; set; } = 1;
         private TimeSpan workoutTime = new TimeSpan(0, 0, 0);
         private const int MaxDifficulty = 10; // Maximum difficulty level
         public SportPage()
@@ -42,7 +42,7 @@ namespace SimFit360
 
         private void DifficultyDecrease_Click(object sender, RoutedEventArgs e)
         {
-            Difficulty = Math.Max(0, Difficulty - 1);
+            Difficulty = Math.Max(1, Difficulty - 1);
             UpdateDifficultyText();
         }
 
