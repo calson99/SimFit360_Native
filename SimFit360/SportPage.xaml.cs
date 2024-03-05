@@ -96,8 +96,10 @@ namespace SimFit360
                 {
                     // Unpause the timer if the user chooses not to save
                     isPaused = false;
-                    // Handle other actions if needed
-                }
+					// Handle other actions if needed
+					ResetWorkout();
+                    NavigateToMainPage();
+				}
             }
             else
             {
@@ -165,6 +167,7 @@ namespace SimFit360
         {
             MainWindow.Instance.NavigateToMainPage(UserId);
         }
+
         private double CalculateKcal()
         {
             // Define baseline calorie burn rate per second
