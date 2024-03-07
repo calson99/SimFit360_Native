@@ -34,46 +34,7 @@ namespace SimFit360
 			{
 				if (textBlockLogin.Text.Length < 4)
 				{
-					if (button.Name == "Button1")
-					{
-						textBlockLogin.Text += "1";
-					}
-					else if (button.Name == "Button2")
-					{
-						textBlockLogin.Text += "2";
-					}
-					else if (button.Name == "Button3")
-					{
-						textBlockLogin.Text += "3";
-					}
-					else if (button.Name == "Button4")
-					{
-						textBlockLogin.Text += "4";
-					}
-					else if (button.Name == "Button5")
-					{
-						textBlockLogin.Text += "5";
-					}
-					else if (button.Name == "Button6")
-					{
-						textBlockLogin.Text += "6";
-					}
-					else if (button.Name == "Button7")
-					{
-						textBlockLogin.Text += "7";
-					}
-					else if (button.Name == "Button8")
-					{
-						textBlockLogin.Text += "8";
-					}
-					else if (button.Name == "Button9")
-					{
-						textBlockLogin.Text += "9";
-					}
-					else if (button.Name == "Button0")
-					{
-						textBlockLogin.Text += "0";
-					}
+					textBlockLogin.Text += button.Content;
 				}
 			}
 		}
