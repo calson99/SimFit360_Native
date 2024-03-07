@@ -84,7 +84,7 @@ namespace SimFit360
                 totalSeconds++;
                 // Calculate and display calories burned
                 double caloriesBurned = CalculateKcal();
-                CaloriesText.Text = $"Calories: {caloriesBurned:F2}"; // Display calories with two decimal places
+                CaloriesText.Text = $"Calories: {caloriesBurned:F0}"; // Display calories with two decimal places
             }
         }
 
@@ -230,7 +230,7 @@ namespace SimFit360
             }
 
             // Adjust the baseline based on total difficulty
-            double adjustedCaloriesPerSecond = BaselineCaloriesPerSecond + (totalDifficulty * 0.0005);
+            double adjustedCaloriesPerSecond = BaselineCaloriesPerSecond + (totalDifficulty * 0.004);
 
             // Calculate total calories burned
             double totalCalories = adjustedCaloriesPerSecond * workoutTime.TotalSeconds;
