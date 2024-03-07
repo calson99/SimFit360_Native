@@ -38,5 +38,7 @@
         <Button Grid.Row="2" Grid.Column="1" Content="-"  Grid.RowSpan="1" Click="DifficultyDecrease_Click"/>
         <!-- Button for STOP -->
         <Button Grid.Row="3" Grid.Column="1" Content="STOP"  Grid.RowSpan="1" Background="Red" Click="Stop_Click"/>
+
+        <WebBrowser x:Name="webBrowser" Grid.Row="1" Grid.RowSpan="3" Focusable="False" Height="auto"/>
     </Grid>
 </UserControl>
