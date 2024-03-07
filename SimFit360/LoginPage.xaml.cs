@@ -91,14 +91,20 @@ namespace SimFit360
 			{
 				if (textBlockLogin.Text.Length == 4)
 				{
-					var user = db.Users.FirstOrDefault(u => u.Pincode == int.Parse(textBlockLogin.Text));
+					int barcode = int.Parse(textBoxTestBarcode.Text);
+					
+					var user = db.Users.FirstOrDefault(u => u.Barcode == barcode);
 					if (user != null)
 					{
-						MainWindow.Instance.NavigateToMainPage(user.Id);
-					}
-					else
-					{
-						MessageBox.Show("Invalid pincode");
+						bool isPinCorrect = SecureHasher.Verify(textBlockLogin.Text, user.Pincode);
+						if (isPinCorrect)
+						{
+							MainWindow.Instance.NavigateToMainPage(user.Id);
+						}
+						else
+						{
+							MessageBox.Show("Invalid Pin");
+						}
 					}
 				}
 			}

@@ -37,28 +37,32 @@ namespace SimFit360.Data
 					Id = 1, 
 					Name = "Jeroen", 
 					Email = "jeroen@gmail.com", 
-					Pincode = 0000 
+					Pincode = SecureHasher.Hash("0000"),
+					Barcode = 11111111
 				},
 				new User
 				{
 					Id = 2, 
 					Name = "Boyan", 
 					Email = "boyan@gmail.com",
-					Pincode = 1111
+					Pincode = SecureHasher.Hash("1111"),
+					Barcode = 22222222
 				},
 				new User
 				{
 					Id = 3,
 					Name = "Caltan",
 					Email = "caltan@gmail.com",
-					Pincode = 2222
+					Pincode = SecureHasher.Hash("2222"),
+					Barcode = 33333333
 				},
 				new User
 				{
 					Id = 4,
 					Name = "Junbo",
 					Email = "junbo@gmail.com",
-					Pincode = 3333
+					Pincode = SecureHasher.Hash("3333"),
+					Barcode = 44444444
 				}
 			);
 
