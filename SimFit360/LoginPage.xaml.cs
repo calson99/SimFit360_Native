@@ -26,6 +26,7 @@ namespace SimFit360
 			InitializeComponent();
 		}
 
+		// Number buttons, adds the number to the pin.
 		private void Number_Click(object sender, RoutedEventArgs e)
 		{
 			var button = sender as Button;
@@ -77,6 +78,7 @@ namespace SimFit360
 			}
 		}
 
+		// Backspace button, removes the last character from the pin.
 		private void BackSpace_Click(object sender, RoutedEventArgs e)
 		{
 			if (textBlockLogin.Text.Length > 0)
@@ -85,6 +87,7 @@ namespace SimFit360
 			}
 		}
 
+		// Login button, checks if the barcode and the pin is correct and navigates to the main page.
 		private void Login_Click(object sender, RoutedEventArgs e)
 		{
 			using var db = new AppDbContext();
