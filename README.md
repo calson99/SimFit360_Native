@@ -14,4 +14,8 @@ Voer de volgende commando's uit in je Package manager control om de migraties ui
 Update-Databse
 
 
+api key
+
+Je moet een nieuwe youtube api key aanvragen bij de google api library.
+hierna moet je deze de api key in de code vervangen met de key die je hebt aangevraagd.
 
