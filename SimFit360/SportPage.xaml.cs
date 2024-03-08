@@ -29,7 +29,11 @@ namespace SimFit360
 	{
         private int Difficulty { get; set; } = 1;
         private TimeSpan workoutTime = new TimeSpan(0, 0, 0);
-        private const int MaxDifficulty = 10; // Maximum difficulty level
+        private int currentlevel = 1;
+        private List<DispatcherTimer> levelTimers = new List<DispatcherTimer>();
+        private int[] levelTimes = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        private List<int> countdowns = new List<int>();
+        private double totalSeconds = 0;
         private DispatcherTimer timer;
         private bool isPaused = false;
         private static System.Timers.Timer aTimer;
@@ -42,9 +46,23 @@ namespace SimFit360
             UpdateDifficultyText();
             OpenRandomVideoButton_Click();
             UserId = userId;
+            InitializeTimers();
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1); // Update every second
             timer.Tick += Timer_Tick;
+        }
+
+        private void InitializeTimers()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                DispatcherTimer timer = new DispatcherTimer();
+                timer.Interval = TimeSpan.FromSeconds(1);
+                timer.Tick += LevelTimer_Tick;
+                levelTimers.Add(timer);
+                countdowns.Add(0); // Start allemaal op nul
+            }
+            UpdateTimerStatus();
         }
 
         public void StartTimer()
@@ -52,6 +70,16 @@ namespace SimFit360
             timer.Start();
         }
 
+        private void LevelTimer_Tick(object sender, EventArgs e)
+        {
+            for (int i = 0; i < countdowns.Count; i++)
+            {
+                if (i == Difficulty - 1) // Controleer of de huidige teller overeenkomt met het huidige niveau
+                {
+                    countdowns[i]++; // Tel 1 seconde bij de teller op
+                }
+            }
+        }
         public async void GetVideoDetails(string Id)
         {
             // get api url from video
@@ -156,26 +184,47 @@ namespace SimFit360
                 // Update UI on the main thread
                 WorkoutTimeText.Text = workoutTime.ToString(@"hh\:mm\:ss");
 
+                totalSeconds++;
                 // Calculate and display calories burned
                 double caloriesBurned = CalculateKcal();
-                CaloriesText.Text = $"Calories: {caloriesBurned:F2}"; // Display calories with two decimal places
+                CaloriesText.Text = $"Calories: {caloriesBurned:F0}"; // Display calories with two decimal places
+            }
+        }
+
+        private void UpdateTimerStatus()
+        {
+            for (int i = 0; i < levelTimers.Count; i++)
+            {
+                if (i == Difficulty - 1)
+                {
+                    levelTimers[i].Start();
+                }
+                else
+                {
+                    levelTimers[i].Stop();
+                }
             }
         }
 
         private void DifficultyIncrease_Click(object sender, RoutedEventArgs e)
         {
             // Check if difficulty is less than the maximum before incrementing
-            if (Difficulty < MaxDifficulty)
+            if (Difficulty < 10)
             {
                 Difficulty++;
+                UpdateTimerStatus();
                 UpdateDifficultyText();
             }
         }
 
         private void DifficultyDecrease_Click(object sender, RoutedEventArgs e)
         {
-            Difficulty = Math.Max(1, Difficulty - 1);
-            UpdateDifficultyText();
+            if (Difficulty > 1)
+            {
+                Difficulty--;
+                UpdateTimerStatus();
+                UpdateDifficultyText();
+            }
         }
 
         private void Stop_Click(object sender, RoutedEventArgs e)
@@ -276,8 +325,15 @@ namespace SimFit360
             // Define baseline calorie burn rate per second
             const double BaselineCaloriesPerSecond = 0.1;
 
-            // Adjust the baseline based on difficulty
-            double adjustedCaloriesPerSecond = BaselineCaloriesPerSecond + (Difficulty * 0.02);
+            // Calculate total difficulty
+            double totalDifficulty = 0;
+            for (int i = 0; i < countdowns.Count; i++)
+            {
+                totalDifficulty += (i + 1) * countdowns[i]; // difficulty * seconds
+            }
+
+            // Adjust the baseline based on total difficulty
+            double adjustedCaloriesPerSecond = BaselineCaloriesPerSecond + (totalDifficulty * 0.004);
 
             // Calculate total calories burned
             double totalCalories = adjustedCaloriesPerSecond * workoutTime.TotalSeconds;
