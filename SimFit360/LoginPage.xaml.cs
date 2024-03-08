@@ -53,20 +53,26 @@ namespace SimFit360
 		{
 			using var db = new AppDbContext();
 			{
+				// Check if the pin is 4 characters long.
 				if (textBlockLogin.Text.Length == 4)
 				{
+					// Check if the barcode is a number.
 					int barcode = int.Parse(textBoxTestBarcode.Text);
 					
+					// Check if the barcode exists in the database.
 					var user = db.Users.FirstOrDefault(u => u.Barcode == barcode);
 					if (user != null)
 					{
+						// Check if the pin is correct.
 						bool isPinCorrect = SecureHasher.Verify(textBlockLogin.Text, user.Pincode);
 						if (isPinCorrect)
 						{
+							// Navigate to the main page.
 							MainWindow.Instance.NavigateToMainPage(user.Id);
 						}
 						else
 						{
+							// Show a message box if the pin is incorrect.
 							MessageBox.Show("Invalid Pin");
 						}
 					}
