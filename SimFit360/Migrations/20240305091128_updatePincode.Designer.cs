@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SimFit360.Data;
 
@@ -10,9 +11,11 @@ using SimFit360.Data;
 namespace SimFit360.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240305091128_updatePincode")]
+    partial class updatePincode
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -190,34 +193,34 @@ namespace SimFit360.Migrations
                         new
                         {
                             Id = 1,
-                            Barcode = 11111111,
+                            Barcode = 1010101,
                             Email = "jeroen@gmail.com",
                             Name = "Jeroen",
-                            Pincode = "i4If1sCeoKM9XdG+oCdL5IYJQk7tB3Sk6+BIalrQkLw=:E/XIEKrA8AQlcUjWyEsNuQ==:10000:SHA512"
+                            Pincode = "C1ejnY0OM9pyOZ2QDLK7CQy9qLEuhbFLX4tAd2AQZ9M=:FhZn/dOHXTiSKBq1V50b9Q==:10000:SHA512"
                         },
                         new
                         {
                             Id = 2,
-                            Barcode = 22222222,
+                            Barcode = 12121212,
                             Email = "boyan@gmail.com",
                             Name = "Boyan",
-                            Pincode = "3B/AJPjJnpkZuuXqhfOzgJj8Kr2/h5T2e5mv+y3Czds=:wJ5bW+0ZkrswwzY7KX0oDw==:10000:SHA512"
+                            Pincode = "K4mhK658t9oMBYk4IsxprXmUyMyXc+Ef8LmTr6dqG7o=:OBIXhAoVYRLMdaho7itZwQ==:10000:SHA512"
                         },
                         new
                         {
                             Id = 3,
-                            Barcode = 33333333,
+                            Barcode = 23232323,
                             Email = "caltan@gmail.com",
                             Name = "Caltan",
-                            Pincode = "8tzEeHPv4rUJtR5sx5K00RbHcu8gxE2YZgxFpm6j4Jc=:c932ueec36uEuqoSwZA8iQ==:10000:SHA512"
+                            Pincode = "phaxTj+F6KxgM24DVZ4xKtz0gOPZtn+4OXm5gdhJbEs=:C8wKYsmDLgXWOUnFKTP4/A==:10000:SHA512"
                         },
                         new
                         {
                             Id = 4,
-                            Barcode = 44444444,
+                            Barcode = 34343434,
                             Email = "junbo@gmail.com",
                             Name = "Junbo",
-                            Pincode = "W7rkeW2t/dH9clWNmUJIzIH/xQz7+YUS6HV3i6PhDwc=:JFFzdjaQSFWW5ZrpIb+oFg==:10000:SHA512"
+                            Pincode = "4RcG6dSKrKuCuWzfTY3SZmSTHjkgckW9+IjQoI2UGzg=:t5INc8G3zBZCCz88kRpkEQ==:10000:SHA512"
                         });
                 });
 

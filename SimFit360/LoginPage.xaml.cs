@@ -26,6 +26,7 @@ namespace SimFit360
 			InitializeComponent();
 		}
 
+		// Number buttons, adds the number to the pin.
 		private void Number_Click(object sender, RoutedEventArgs e)
 		{
 			var button = sender as Button;
@@ -33,50 +34,12 @@ namespace SimFit360
 			{
 				if (textBlockLogin.Text.Length < 4)
 				{
-					if (button.Name == "Button1")
-					{
-						textBlockLogin.Text += "1";
-					}
-					else if (button.Name == "Button2")
-					{
-						textBlockLogin.Text += "2";
-					}
-					else if (button.Name == "Button3")
-					{
-						textBlockLogin.Text += "3";
-					}
-					else if (button.Name == "Button4")
-					{
-						textBlockLogin.Text += "4";
-					}
-					else if (button.Name == "Button5")
-					{
-						textBlockLogin.Text += "5";
-					}
-					else if (button.Name == "Button6")
-					{
-						textBlockLogin.Text += "6";
-					}
-					else if (button.Name == "Button7")
-					{
-						textBlockLogin.Text += "7";
-					}
-					else if (button.Name == "Button8")
-					{
-						textBlockLogin.Text += "8";
-					}
-					else if (button.Name == "Button9")
-					{
-						textBlockLogin.Text += "9";
-					}
-					else if (button.Name == "Button0")
-					{
-						textBlockLogin.Text += "0";
-					}
+					textBlockLogin.Text += button.Content;
 				}
 			}
 		}
 
+		// Backspace button, removes the last character from the pin.
 		private void BackSpace_Click(object sender, RoutedEventArgs e)
 		{
 			if (textBlockLogin.Text.Length > 0)
@@ -85,20 +48,27 @@ namespace SimFit360
 			}
 		}
 
+		// Login button, checks if the barcode and the pin is correct and navigates to the main page.
 		private void Login_Click(object sender, RoutedEventArgs e)
 		{
 			using var db = new AppDbContext();
 			{
 				if (textBlockLogin.Text.Length == 4)
 				{
-					var user = db.Users.FirstOrDefault(u => u.Pincode == int.Parse(textBlockLogin.Text));
+					int barcode = int.Parse(textBoxTestBarcode.Text);
+					
+					var user = db.Users.FirstOrDefault(u => u.Barcode == barcode);
 					if (user != null)
 					{
-						MainWindow.Instance.NavigateToMainPage(user.Id);
-					}
-					else
-					{
-						MessageBox.Show("Invalid pincode");
+						bool isPinCorrect = SecureHasher.Verify(textBlockLogin.Text, user.Pincode);
+						if (isPinCorrect)
+						{
+							MainWindow.Instance.NavigateToMainPage(user.Id);
+						}
+						else
+						{
+							MessageBox.Show("Invalid Pin");
+						}
 					}
 				}
 			}

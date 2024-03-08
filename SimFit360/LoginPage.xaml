@@ -12,7 +12,9 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
+
+        <TextBox x:Name="textBoxTestBarcode" Width="200" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" FontSize="40"/>
+
         <Border  BorderThickness="2" HorizontalAlignment="Center" Margin="20">
             <TextBlock x:Name="textBlockLogin" Height="50" HorizontalAlignment="Center" FontSize="40"/>
         </Border>

@@ -2,8 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -13,16 +16,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml;
 using System.Windows.Threading;
 using SimFit360.Data;
 
 namespace SimFit360
 {
-    /// <summary>
-    /// Interaction logic for SportPage.xaml
-    /// </summary>
-    public partial class SportPage : UserControl
-    {
+	/// <summary>
+	/// Interaction logic for SportPage.xaml
+	/// </summary>
+	public partial class SportPage : UserControl
+	{
         private int Difficulty { get; set; } = 1;
         private TimeSpan workoutTime = new TimeSpan(0, 0, 0);
         private int currentlevel = 1;
@@ -32,11 +36,15 @@ namespace SimFit360
         private double totalSeconds = 0;
         private DispatcherTimer timer;
         private bool isPaused = false;
+        private static System.Timers.Timer aTimer;
+        private static Random random = new Random();
+        private static System.Timers.Timer Timer;
         public int UserId { get; set; }
         public SportPage(int userId)
         {
             InitializeComponent();
             UpdateDifficultyText();
+            OpenRandomVideoButton_Click();
             UserId = userId;
             InitializeTimers();
             timer = new DispatcherTimer();
@@ -72,6 +80,101 @@ namespace SimFit360
                 }
             }
         }
+        public async void GetVideoDetails(string Id)
+        {
+            // get api url from video
+            string url = "https://www.googleapis.com/youtube/v3/videos?id=" + Id + "&part=contentDetails&key=AIzaSyAUUfUMYO9BeU1vxpg1M3yYnSCHMq3dpe0";
+
+            var client = new HttpClient();
+            var response = await client.GetAsync(url);
+            var content = await response.Content.ReadAsStringAsync();
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+
+            // take video duration from the api
+            VideoListResponse videoList = JsonSerializer.Deserialize<VideoListResponse>(content, options);
+            var video = videoList.Items[0];
+            string duration = video.ContentDetails.Duration;
+            VideoTimer(duration);
+        }
+
+        public async void VideoTimer(string duration)
+        {
+            // start a timer matching video duration
+            TimeSpan timeSpan = XmlConvert.ToTimeSpan(duration);
+            double doubleTimeSpan = timeSpan.TotalMilliseconds;
+
+            aTimer = new System.Timers.Timer(doubleTimeSpan);
+
+            // start a new video when the timer finishes
+
+            aTimer.Elapsed += OnTimedEvent;
+            aTimer.Enabled = true;
+        }
+
+        public static string RandomString(int length)
+        {
+            // make a 3 symbol long random string
+
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        private async void LoadYoutubeVideo(string url)
+        {
+            // add an iframe to the webbrowser to show the youtube video
+            string html = "<html><head>";
+            html += "<meta content='IE=Edge' http-equiv='X-UA-Compatible'/>";
+
+            html += "<iframe id='video' src= '" + url + "'height=\"100%\" style=\"position:absolute; top:0; left: 0\" width=\"100%\" frameborder='0' allow = \"autoplay; encrypted-media\"  fullscreen allowfullscreen></iframe>";
+
+            html += "</body></html>";
+
+            Dispatcher.Invoke(() =>
+            {
+                // Navigate the WebBrowser control to the HTML content
+                webBrowser.NavigateToString(html);
+            });
+        }
+
+        private async void OnTimedEvent(Object source, ElapsedEventArgs e)
+        {
+            OpenRandomVideoButton_Click();
+            aTimer.Enabled = false;
+        }
+
+        private async void OpenRandomVideoButton_Click()
+        {
+            try
+            {
+                // get a random youtube video id
+
+                string videoUrl = await GetRandomVideoUrl();
+
+                // put the id in an embed url and a watch url
+
+                if (!string.IsNullOrEmpty(videoUrl))
+                {
+                    var videoUrlEmbed = $"https://www.youtube.com/embed/{videoUrl}" + "?autoplay=1";
+                    var videoUrlWatch = $"https://www.youtube.com/watch?v={videoUrl}";
+                    GetVideoDetails(videoUrl);
+                    LoadYoutubeVideo(videoUrlEmbed);
+                }
+                else
+                {
+                    MessageBox.Show("Failed to get a valid video URL from YouTube API.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         private void Timer_Tick(object sender, EventArgs e)
         {
             if (!isPaused)
@@ -238,7 +341,31 @@ namespace SimFit360
             return totalCalories;
         }
 
-    }
+        private static async Task<string> GetRandomVideoUrl()
+        {
+            // get a random video id using a random string in the youtube api
 
+            var q = RandomString(3);
+            string apiUrl = "https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=1&q=" + q;
+            string apiKey = "AIzaSyAUUfUMYO9BeU1vxpg1M3yYnSCHMq3dpe0"; 
+
+            using (HttpClient client = new HttpClient())
+            {
+                HttpResponseMessage response = await client.GetAsync(apiUrl + "&key=" + apiKey);
+                if (response.IsSuccessStatusCode)
+                {
+                    string json = await response.Content.ReadAsStringAsync();
+                    dynamic data = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
+                    string videoId = data.items[0].id.videoId;
+                    return videoId;
+                }
+                else
+                {
+                    throw new Exception("Failed to fetch a random video ID from YouTube API.");
+                }
+            }
+        }
+    }
 }
+
 
